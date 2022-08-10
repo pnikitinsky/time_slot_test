@@ -1,11 +1,10 @@
 Given('I test embassy timeslots') do
   @browser.navigate.to 'https://booking.timerise.io/service/58hcCrqGvhSEFv9XoTli?lang=ua'
-  # while allocate_available_slots > 0
-  #   wait(300) # wait for 5 minutes
-  #   @browser.navigate.refresh
-  # end
-  # File.write('timetracker.txt', Time.now)
-  allocate_available_slots
+  while allocate_available_slots > 0
+    wait(300) # wait for 5 minutes
+    @browser.navigate.refresh
+  end
+  File.write('timetracker.txt', Time.now)
   select_last_slot
 end
 
@@ -17,9 +16,9 @@ def select_last_slot
   email = @browser.find_element(:css, 'input#email')
   telephone = @browser.find_element(:xpath, "//label[@for='phone-number-select']/../div/input")
   button = @browser.find_element(:css, "button[type=submit]")
-  name.send_keys(NAME)
-  telephone.send_keys TELEPHONE
-  email.send_keys EMAIL
+  name.send_keys(ENV['NAME'])
+  telephone.send_keys(ENV['TELEPHONE'])
+  email.send_keys(ENV['EMAIL'])
   wait 1
   button.click
 end
