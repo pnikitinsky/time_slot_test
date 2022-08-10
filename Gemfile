@@ -1,5 +1,5 @@
 source 'http://rubygems.org'
-
+ruby '2.7.4'
 gem 'browser'
 gem 'cucumber', '3.1.2'
 gem 'parallel_tests', '2.29.0'
