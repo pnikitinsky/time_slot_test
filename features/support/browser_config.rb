@@ -5,7 +5,7 @@ module BrowserConfig
   CHROME_DESKTOP = {
     'browser' => :chrome,
     'path' => './drivers/macos/chromedriver',
-    'window_x' => 969,
+    'window_x' => 900,
     'window_y' => 1134,
     'platform' => 'desktop'
   }
