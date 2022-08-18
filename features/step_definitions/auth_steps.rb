@@ -1,14 +1,25 @@
 Given('I test embassy timeslots') do
-  @browser.navigate.to 'https://booking.timerise.io/service/58hcCrqGvhSEFv9XoTli?lang=ua'
-  unless target_slot_visible?
+  navigate
+  while !target_slot_visible?
     wait(30) unless Time.now.hour == 2
-    @browser.navigate.refresh
+    navigate
     puts Time.now
   end
   File.write('timetracker.txt', Time.now)
   select_last_slot
 end
 
+def navigate
+  should_navigate = true
+  while should_navigate
+    begin
+      @browser.navigate.to 'https://booking.timerise.io/service/58hcCrqGvhSEFv9XoTli?lang=ua'
+      should_navigate = false
+    rescue
+      should_navigate = true
+    end
+  end
+end
 def select_last_slot
   slot = @browser.find_element(:xpath, "//div[text()='29 серп.']/../../*/*/span[text()=\"10:45\"]")
   slot.click
@@ -25,18 +36,15 @@ def select_last_slot
 end
 
 def target_slot_visible?
-  begin
-    wait(5)
-    next_chevron_btn = @browser.find_element(:css, 'svg.icon.icon-tabler.icon-tabler-chevron-right')
-    next_chevron_btn.click
-    next_chevron_btn.click
-    wait(5)
-    spans = @browser.find_elements(:xpath, "//div[text()='29 серп.']/../../*/*/span[text()=\"-\"]")
-    slot = @browser.find_element(:xpath, "//div[text()='29 серп.']/../../*/*/span[text()=\"10:45\"]")
-    spans.count == 0 && slot.displayed?
-  rescue
-    false
-  end
+  wait(5)
+  next_chevron_btn = @browser.find_element(:css, 'svg.icon.icon-tabler.icon-tabler-chevron-right')
+  next_chevron_btn.click
+  next_chevron_btn.click
+  wait(5)
+  slot = @browser.find_element(:xpath, "//div[text()='29 серп.']/../../*/*/span[text()=\"10:45\"]")
+  slot.displayed?
+rescue
+  false
 end
 
 def wait(sec, el=nil)
